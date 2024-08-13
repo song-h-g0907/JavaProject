@@ -1,0 +1,24 @@
+package test;
+
+import java.util.Scanner;
+
+public class Main {
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int a= sc.nextInt();
+		int b=sc.nextInt();
+		int c=sc.nextInt();
+		int mx=0;
+		mx =Math.max(Math.max(a, b),c);
+		int mmx = mx;
+		while(true) {
+			if(a+b+c-mmx<=mx) {
+				mx-=1;
+			}else {
+				System.out.println(a+b+c-mmx+mx);
+				return;
+			}
+		}
+	}
+}

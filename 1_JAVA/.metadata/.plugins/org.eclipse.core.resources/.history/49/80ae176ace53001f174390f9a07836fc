@@ -1,0 +1,42 @@
+package test;
+
+import java.util.Scanner;
+
+public class Main {
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int a = sc.nextInt();
+		int b = sc.nextInt();
+		int[] arr = new int[b-a];
+		int count1=0;
+		int sum=0;
+		for (int i = a; i<=b; i++) {
+			int count2 =0;
+			for (int j = 2; j<=i; j++) {
+				if(i%j==0) {
+					count2++;
+				}
+			}
+			if (count2 == 1) {
+				arr[count1++]=i;
+			}
+		}
+		for (int i = 0 ; i < arr.length; i++) {
+			if(arr[i]==0) {
+				break;
+			}
+			sum+=arr[i];
+		}
+		for (int i = 0 ; i < arr.length; i++) {
+			arr[0]=3;
+			System.out.println(arr[i]);
+		}
+		System.out.println();
+		System.out.println(sum);
+		System.out.println(arr[0]);
+    }
+
+	
+	
+}
