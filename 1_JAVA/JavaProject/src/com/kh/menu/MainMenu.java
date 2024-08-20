@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.kh.controller.Controller;
-import com.kh.vo.Account;
 
 
 public class MainMenu {
@@ -27,9 +26,6 @@ public class MainMenu {
 			switch (num) {
 			case 1:
 				int a = cr.checkac();
-//				for(Account ac : cr.clac()) {
-//					System.out.println(ac);
-//				}
 				if(a==0) {
 					memberMenu();
 				}
@@ -422,6 +418,8 @@ public class MainMenu {
 			if(cr.checkId(id)) {
 				usid=id;
 				break;
+			}else {
+				System.out.println("중복된 아이디입니다. 다시 입력하세요");
 			}
 		}
 		System.out.print("사용할 비밀번호 : ");
@@ -440,22 +438,14 @@ public class MainMenu {
 			if(cr.checkNname(nname)) {
 				usnname=nname;
 				break;
+			}else {
+				System.out.println("중복된 닉네임입니다. 다시 입력하세요");
 			}
 		}
 		cr.insertac(usid,uspw,usnname);
 	}
 	
 	public void saveObject() {
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("account1.txt"));){
-			for(int i = 0; i <cr.clac().size(); i++) {
-				oos.writeObject(cr.clac().get(i));
-			}
-			oos.flush();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("product1.txt"));){
 			for(int i = 0; i <cr.clpd().size(); i++) {
 				oos.writeObject(cr.clpd().get(i));

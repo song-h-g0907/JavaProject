@@ -43,6 +43,15 @@ public class Account implements Serializable{
 		this.nname = nname;
 		this.unum = unum;
 	}
+	public Account(String id, String pwd, String nname) {
+		super();
+		this.id = id;
+		this.pwd = pwd;
+		this.nname = nname;
+	}
+	public void setUnum(int unum) {
+		this.unum = unum;
+	}
 	@Override
 	public int hashCode() {
 		String str =this.id + this.nname + this.pwd + this.unum; 

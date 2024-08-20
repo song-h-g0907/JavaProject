@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.kh.menu.MainMenu;
+import com.kh.service.AccountService;
 import com.kh.vo.Account;
 import com.kh.vo.BuyProduct;
 import com.kh.vo.Product;
@@ -19,39 +20,11 @@ import com.kh.vo.Product;
 public class Controller {
 	private Account user=null;
 	private int pnum=0;
-	private int lastUnum=0;
-	private List<Account> ac = new ArrayList<>();
 	private List<Product> pd = new ArrayList<>();
 	private List<BuyProduct> ba = new ArrayList<>();
 	private Scanner sc = new Scanner(System.in);
 	
 	public Controller() {
-		try (ObjectInputStream ois =new ObjectInputStream(new FileInputStream("account1.txt"));){
-			while(true) {
-				try {
-					ac.add((Account)ois.readObject());
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-		}catch(EOFException e) {
-			
-		} catch (FileNotFoundException e) {
-			File f1 = new File("account1.txt");
-			try {
-				f1.createNewFile();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		for(int i=0; i<ac.size(); i++) {
-			if(ac.get(i).getUnum()>lastUnum) {
-				lastUnum = ac.get(i).getUnum();
-			}
-		}
-		lastUnum++;
 		try (ObjectInputStream ois =new ObjectInputStream(new FileInputStream("product1.txt"));){
 			while(true) {
 				try {
@@ -111,11 +84,7 @@ public class Controller {
 	public Account getUser() {
 		return user;
 	}
-	
-	public List<Account> clac() {
-		return ac;
-	}
-	
+		
 	public List<Product> clpd() {
 		return pd;
 	}
@@ -125,11 +94,9 @@ public class Controller {
 	}
 	
 	public boolean checkId(String id) {
-		for (int i = 0 ; i <ac.size(); i++) {
-			if(ac.get(i).getId().equals(id)) {
-				System.out.println("중복된 아이디입니다. 다시 입력하세요");
-				return false;
-			}
+		Account a= new AccountService().searchAccountById(id);
+		if(a!=null) {
+			return false;
 		}	
 		return true;
 	}
@@ -152,18 +119,22 @@ public class Controller {
 	}
 	
 	public boolean checkNname(String nname) {
-		for (int i = 0 ; i <ac.size(); i++) {
-			if(ac.get(i).getNname().equals(nname)) {
-				System.out.println("중복된 닉네임입니다. 다시 입력하세요.");
-				return false;
-			}
+		Account a= new AccountService().searchAccountByNname(nname);
+		if(a!=null) {
+			return false;
 		}	
 		return true;	
 	}
 	
 	public void insertac(String id,String pwd,String nname) {
-		ac.add(new Account(id,pwd,nname,lastUnum++));
-		System.out.println("회원가입이 정성적으로 되었습니다.");
+		Account a= new Account(id,pwd,nname); 
+		int re = new AccountService().insertAccount(a);
+		if(re>0) {
+			System.out.println("회원가입이 정성적으로 되었습니다.");
+		}else {
+			System.out.println("회원가입에 실패하였습니다.");
+		}
+		
 	}
 	
 	public int checkac() {
@@ -173,7 +144,8 @@ public class Controller {
 			String id = sc.nextLine();
 			System.out.print("비밀번호 : ");
 			String pwd = sc.nextLine();
-			if(ac.isEmpty()) {
+			Account a= new AccountService().searchAccountById(id);
+			if(a==null) {
 				count++;
 				System.out.print("일치하는 계정이 없습니다. ");
 				if(count==5) {
@@ -183,35 +155,23 @@ public class Controller {
 				}
 				System.out.println("다시 입력해주세요");
 				System.out.println("현재 "+count+"회 틀렸습니다. 5회 이상 틀릴시 초기 화면으로 돌아갑니다.");
+				continue;
 			}
-			for (int i = 0 ; i < ac.size(); i++) {
-				if((ac.get(i).getId().equals(id))&&ac.get(i).getPwd().equals(pwd)) {
-					System.out.println("로그인에 성공하였습니다.");
-					user = ac.get(i);
-					return 0;
-				}else if(ac.get(i).getId().equals(id)) {
-					count++;
-					System.out.print("비밀번호가 일치하지 않습니다. ");
-					if(count==5) {
-						System.out.println();
-						System.out.println("5회 이상 틀렸습니다. 초기화면으로 돌아갑니다.");
-						return 5;
-					}
-					System.out.println("다시 입력해주세요");
-					System.out.println("현재 "+count+"회 틀렸습니다. 5회 이상 틀릴시 초기 화면으로 돌아갑니다.");
-					break;
+			if(a.getPwd().equals(pwd)) {
+				System.out.println("로그인에 성공하였습니다.");
+				user = a;
+				return 0;
+			}else {
+				count++;
+				System.out.print("비밀번호가 일치하지 않습니다. ");
+				if(count==5) {
+					System.out.println();
+					System.out.println("5회 이상 틀렸습니다. 초기화면으로 돌아갑니다.");
+					return 5;
 				}
-				if(i==ac.size()-1) {
-					count++;
-					System.out.print("일치하는 계정이 없습니다. ");
-					if(count==5) {
-						System.out.println();
-						System.out.println("5회 이상 틀렸습니다. 초기화면으로 돌아갑니다.");
-						return 5;
-					}
-					System.out.println("다시 입력해주세요");
-					System.out.println("현재 "+count+"회 틀렸습니다. 5회 이상 틀릴시 초기 화면으로 돌아갑니다.");
-				}
+				System.out.println("다시 입력해주세요");
+				System.out.println("현재 "+count+"회 틀렸습니다. 5회 이상 틀릴시 초기 화면으로 돌아갑니다.");
+				continue;
 			}
 		}	
 	}
@@ -230,21 +190,19 @@ public class Controller {
 		if (pl.get(0) instanceof BuyProduct) {
 			for(int i = 0 ; i <pl.size(); i++) {
 				String acuser = "";
-				System.out.println("제품번호 : "+((BuyProduct)pl.get(i)).getPnum());
-				System.out.println("작성자명 : "+((BuyProduct)pl.get(i)).getRename());
-				for(int j = 0; j <ac.size(); j++) {
-					if(ac.get(j).getUnum()==((BuyProduct)pl.get(i)).getBuyAccount()) {
-						acuser = ac.get(j).getNname();
-					}
-				}
-				System.out.println(((BuyProduct)pl.get(i)).toString()+" / 구매자 : "+acuser);
+				BuyProduct bp = (BuyProduct)pl.get(i);
+				System.out.println("제품번호 : "+bp.getPnum());
+				System.out.println("작성자명 : "+bp.getRename());
+				acuser = new AccountService().searchAccountByUnum(bp.getBuyAccount()).getNname();
+				System.out.println(bp.toString()+" / 구매자 : "+acuser);
 				System.out.println("---------------------------------------");
 			}
 		}else {
 			for(int i = 0 ; i <pl.size(); i++) {
-				System.out.println("제품번호 : "+((Product)pl.get(i)).getPnum());
-				System.out.println("작성자명 : "+((Product)pl.get(i)).getRename());
-				System.out.println(((Product)pl.get(i)).toString());
+				Product pd = (Product)pl.get(i);
+				System.out.println("제품번호 : "+pd.getPnum());
+				System.out.println("작성자명 : "+pd.getRename());
+				System.out.println(pd.toString());
 				System.out.println("---------------------------------------");
 			}
 		}
@@ -275,12 +233,7 @@ public class Controller {
 					System.out.print("비밀번호 확인 : ");
 					String pw = sc.nextLine();
 					if(user.getPwd().equals(pw)) {
-						for(int i = 0 ; i < ac.size(); i++) {
-							if(ac.get(i).getUnum()==user.getUnum()) {
-								ac.remove(i);
-								break;
-							}
-						}
+						new AccountService().deleteAccount(user.getId());
 						user=null;
 						new MainMenu().saveObject();
 						System.out.println("정상적으로 탈퇴되었습니다.");
@@ -313,12 +266,23 @@ public class Controller {
 	
 	public void changePwd(String pwd) {
 		user.setPwd(pwd);
-		System.out.println("비밀번호가 변경되었습니다.");
+		int a=new AccountService().updateAccountPwd(user,pwd);
+		if(a>0) {
+			System.out.println("비밀번호가 변경되었습니다.");
+		}else {
+			System.out.println("비밀번호 변경에 실패하였습니다.");
+		}
+		
 	}
 	
 	public void changeNname(String nname) {
 		user.setNname(nname);
-		System.out.println("닉네임이 변경되었습니다.");
+		int a=new AccountService().updateAccountNname(user,nname);
+		if(a>0) {
+			System.out.println("닉네임이 변경되었습니다.");
+		}else {
+			System.out.println("닉네임 변경에 실패하였습니다.");
+		}
 	}
 	
 	public int buy(int pnum) {
