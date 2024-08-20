@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.kh.controller.Controller;
+import com.kh.vo.Account;
 
 
 public class MainMenu {
@@ -26,6 +27,9 @@ public class MainMenu {
 			switch (num) {
 			case 1:
 				int a = cr.checkac();
+//				for(Account ac : cr.clac()) {
+//					System.out.println(ac);
+//				}
 				if(a==0) {
 					memberMenu();
 				}
@@ -34,40 +38,10 @@ public class MainMenu {
 				bememberMenu();
 				break;
 			case 3:
-				String usid,uspw,usnname;
-				while(true) {
-					System.out.print("사용할 아이디 : ");
-					String id = sc.nextLine();
-					if(cr.checkId(id)) {
-						usid=id;
-						break;
-					}
-				}
-				System.out.print("사용할 비밀번호 : ");
-				String pwd = sc.nextLine();
-				while(true) {
-					System.out.print("비밀번호 확인 : ");
-					String npwd = sc.nextLine();
-					if(cr.checkPwd(pwd, npwd)) {
-						uspw = pwd;
-						break;
-					}
-				}
-				while(true) {
-					System.out.print("사용할 닉네임 : ");
-					String nname = sc.nextLine();
-					if(cr.checkNname(nname)) {
-						usnname=nname;
-						break;
-					}
-				}
-				cr.insertac(usid,uspw,usnname);
+				this.insertac();
 				break;
 			case 9:
-				System.out.println("프로그램을 종료합니다.");
-				saveObject();
-				sc.close();
-				System.exit(0);
+				this.fnProgram();
 			default:
 				System.out.println("잘못된입력입니다.");
 			}
@@ -90,10 +64,7 @@ public class MainMenu {
 				menu();
 				break;
 			case 9:
-				System.out.println("프로그램을 종료합니다.");
-				saveObject();
-				sc.close();
-				System.exit(0);
+				this.fnProgram();
 			default:
 				System.out.println("잘못된입력입니다.");
 			}
@@ -125,10 +96,7 @@ public class MainMenu {
 				System.out.println("초기화면으로 돌아갑니다.");
 				return;
 			case 9:
-				System.out.println("프로그램을 종료합니다.");
-				saveObject();
-				sc.close();
-				System.exit(0);
+				this.fnProgram();
 			default:
 				System.out.println("잘못된입력입니다.");
 			}
@@ -162,10 +130,7 @@ public class MainMenu {
 			case 4:
 				return;
 			case 9:
-				System.out.println("프로그램을 종료합니다.");
-				saveObject();
-				sc.close();
-				System.exit(0);
+				this.fnProgram();
 			default:
 				System.out.println("잘못된입력입니다.");
 			}
@@ -263,10 +228,7 @@ public class MainMenu {
 				}
 				break;
 			case 9:
-				System.out.println("프로그램을 종료합니다.");
-				saveObject();
-				sc.close();
-				System.exit(0);
+				this.fnProgram();
 			default:
 				System.out.println("잘못된입력입니다.");
 			}
@@ -309,10 +271,7 @@ public class MainMenu {
 			case 4:
 				return;
 			case 9:
-				System.out.println("프로그램을 종료합니다.");
-				saveObject();
-				sc.close();
-				System.exit(0);
+				this.fnProgram();
 			default:
 				System.out.println("잘못된입력입니다.");
 			}
@@ -368,10 +327,7 @@ public class MainMenu {
 			case 4:
 				return;
 			case 9:
-				System.out.println("프로그램을 종료합니다.");
-				saveObject();
-				sc.close();
-				System.exit(0);
+				this.fnProgram();
 			default:
 				System.out.println("잘못된입력입니다.");
 			}
@@ -411,10 +367,7 @@ public class MainMenu {
 			case 4:
 				return;
 			case 9:
-				System.out.println("프로그램을 종료합니다.");
-				saveObject();
-				sc.close();
-				System.exit(0);
+				this.fnProgram();
 			default:
 				System.out.println("잘못된입력입니다.");
 			}
@@ -453,10 +406,7 @@ public class MainMenu {
 			case 4:
 				return;
 			case 9:
-				System.out.println("프로그램을 종료합니다.");
-				saveObject();
-				sc.close();
-				System.exit(0);
+				this.fnProgram();
 			default:
 				System.out.println("잘못된입력입니다.");
 			}
@@ -464,11 +414,38 @@ public class MainMenu {
 		}
 			
 	}
+	public void insertac() {
+		String usid,uspw,usnname;
+		while(true) {
+			System.out.print("사용할 아이디 : ");
+			String id = sc.nextLine();
+			if(cr.checkId(id)) {
+				usid=id;
+				break;
+			}
+		}
+		System.out.print("사용할 비밀번호 : ");
+		String pwd = sc.nextLine();
+		while(true) {
+			System.out.print("비밀번호 확인 : ");
+			String npwd = sc.nextLine();
+			if(cr.checkPwd(pwd, npwd)) {
+				uspw = pwd;
+				break;
+			}
+		}
+		while(true) {
+			System.out.print("사용할 닉네임 : ");
+			String nname = sc.nextLine();
+			if(cr.checkNname(nname)) {
+				usnname=nname;
+				break;
+			}
+		}
+		cr.insertac(usid,uspw,usnname);
+	}
 	
 	public void saveObject() {
-		if(cr.getUser()!=null) {
-			cr.addClac(cr.getUser());
-		}
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("account1.txt"));){
 			for(int i = 0; i <cr.clac().size(); i++) {
 				oos.writeObject(cr.clac().get(i));
@@ -508,5 +485,11 @@ public class MainMenu {
 			return 0;
 		}
 	}
-	
+	public void fnProgram() {
+		System.out.println("프로그램을 종료합니다.");
+		saveObject();
+		sc.close();
+		System.exit(0);
+	}
+
 }

@@ -4,10 +4,14 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Account implements Serializable{
+	private int unum;
 	private String id;
 	private String pwd;
 	private String nname;
-	private int unum;
+	@Override
+	public String toString() {
+		return "Account [id=" + id + ", pwd=" + pwd + ", nname=" + nname + ", unum=" + unum + "]";
+	}
 	public int getUnum() {
 		return unum;
 	}

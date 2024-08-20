@@ -11,6 +11,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import com.kh.menu.MainMenu;
 import com.kh.vo.Account;
 import com.kh.vo.BuyProduct;
 import com.kh.vo.Product;
@@ -123,10 +124,6 @@ public class Controller {
 		return ba;
 	}
 	
-	public void addClac(Account a) {
-		this.ac.add(a);
-	}
-	
 	public boolean checkId(String id) {
 		for (int i = 0 ; i <ac.size(); i++) {
 			if(ac.get(i).getId().equals(id)) {
@@ -216,7 +213,6 @@ public class Controller {
 					System.out.println("현재 "+count+"회 틀렸습니다. 5회 이상 틀릴시 초기 화면으로 돌아갑니다.");
 				}
 			}
-			
 		}	
 	}
 	
@@ -258,15 +254,15 @@ public class Controller {
 	public int wdcheck() {
 		while(true) {
 			System.out.print("정말 탈퇴하시겠습니까(y/n) : ");
-			String ch = sc.nextLine();
+			String ch = sc.nextLine().toUpperCase();
 			if(ch.length()!=1) {
 				System.out.println("잘못된입력입니다.");
 				continue;
 			}
-			if (ch.charAt(0)=='n') {
+			if (ch.charAt(0)=='N') {
 				System.out.println("'내정보'로 돌아갑니다");
 				return 0;
-			}else if(ch.charAt(0)=='y') {
+			}else if(ch.charAt(0)=='Y') {
 				for(int i = 0 ; i <pd.size(); i++) {
 					if(pd.get(i).getRenum()==user.getUnum()) {
 						System.out.println("등록된 제품이 있어 탈퇴가 불가능합니다.");
@@ -279,10 +275,14 @@ public class Controller {
 					System.out.print("비밀번호 확인 : ");
 					String pw = sc.nextLine();
 					if(user.getPwd().equals(pw)) {
-						for (int i = 0; i <ac.size(); i++) {
-							ac.remove(user);
+						for(int i = 0 ; i < ac.size(); i++) {
+							if(ac.get(i).getUnum()==user.getUnum()) {
+								ac.remove(i);
+								break;
+							}
 						}
 						user=null;
+						new MainMenu().saveObject();
 						System.out.println("정상적으로 탈퇴되었습니다.");
 						System.out.println("초기화면으로 돌아갑니다.");
 						return 1;
