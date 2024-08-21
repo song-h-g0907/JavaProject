@@ -22,8 +22,7 @@ public class Controller {
 	private int pnum=0;
 	private List<Product> pd = new ArrayList<>();
 	private List<BuyProduct> ba = new ArrayList<>();
-	private Scanner sc = new Scanner(System.in);
-	
+	private Scanner sc = new Scanner(System.in);	
 	public Controller() {
 		try (ObjectInputStream ois =new ObjectInputStream(new FileInputStream("product1.txt"));){
 			while(true) {
@@ -235,7 +234,6 @@ public class Controller {
 					if(user.getPwd().equals(pw)) {
 						new AccountService().deleteAccount(user.getId());
 						user=null;
-						new MainMenu().saveObject();
 						System.out.println("정상적으로 탈퇴되었습니다.");
 						System.out.println("초기화면으로 돌아갑니다.");
 						return 1;
@@ -261,7 +259,6 @@ public class Controller {
 	public void myinfo() {
 		System.out.println("아이디 : "+user.getId());
 		System.out.println("닉네임 : "+user.getNname());
-		
 	}
 	
 	public void changePwd(String pwd) {
@@ -412,15 +409,15 @@ public class Controller {
 				boolean nego;
 				while(true) {
 					System.out.print("수정할 네고 가능 여부(y/n) : ");
-					String ch = sc.nextLine();
+					String ch = sc.nextLine().toUpperCase();
 					if(ch.length()!=1) {
 						System.out.println("잘못된입력입니다.");
 						continue;
 					}
-					if(ch.charAt(0)=='y') {
+					if(ch.charAt(0)=='Y') {
 						nego = true;
 						break;
-					}else if(ch.charAt(0)=='n'){
+					}else if(ch.charAt(0)=='N'){
 						nego = false;
 						break;
 					}else {

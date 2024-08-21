@@ -85,7 +85,7 @@ public class Product implements Serializable{
 
 	@Override
 	public String toString() {
-		String str = String.format("제품명 : %s / 가격 : %d\n네고가능여부 : %c / 설명 : %s",this.pname,this.price,(this.nego?'o':'x'),this.exp);
+		String str = String.format("제품명 : %s / 가격 : %,d\n네고가능여부 : %c / 설명 : %s",this.pname,this.price,(this.nego?'o':'x'),this.exp);
 		return str;
 	}
 	

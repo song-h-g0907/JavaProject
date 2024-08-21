@@ -17,7 +17,7 @@ public class AccountDao {
 	 */
 	public int insertAccount(Connection conn,Account m) {
 		
-		int result = 0; //처리도니 결과를 받아줄 변수
+		int result = 0; //처리된 결과를 받아줄 변수
 		PreparedStatement pstmt = null; // 미완성 sql문을 통해서 객체생성 후 객체의 메소드를 이용해 완성가능
 		String sql = "INSERT INTO Account VALUES(SEQ_USERNO.NEXTVAL, ?,?,?)";
 		

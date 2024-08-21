@@ -384,7 +384,7 @@ public class MainMenu {
 			case 1:
 				System.out.print("수정할 제품번호 : ");
 				int pnum1=checkInt(sc.nextLine());
-				if(cr.rmProduct(pnum1)) {
+				if(cr.moProduct(pnum1)) {
 					System.out.println("정상적으로 수정되었습니다.");
 				}else {
 					System.out.println("존재하지 않거나 수정할 수 없는 제품번호입니다.");
@@ -475,6 +475,7 @@ public class MainMenu {
 			return 0;
 		}
 	}
+	
 	public void fnProgram() {
 		System.out.println("프로그램을 종료합니다.");
 		saveObject();
