@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        #container{
+            display: flex;
+        }
+        #child{
+            border: 2px solid #e0e1e0;
+            background: #ededed;
+            margin: 0 auto;
+        }
+        #spid,#sppw,#spcp{
+            color: #8f8f8f;
+            font-size: 8px;
+        }
+        table{
+            margin-top: 40px;
+        }
+        input[type="text"]{
+            border: 0px;
+            border-bottom: 2px dashed;
+            background: #ededed;
+            width: 200px;
+            margin-right: 15px;
+        }
+        input[type="button"]{
+            border: 0px;
+            background-color: #c5e0b4;
+            margin: 5px;
+            margin-left: 15px;
+            width: 90%;
+            height: 40px;
+            font-family: "Noto Sans KR", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 20px;
+        }
+        tr > td{
+            font-family: "Noto Sans KR", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 600;
+            font-style: normal;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="child">
+            <table>
+                <tr>
+                    <td style="width: 30%;">아이디</td>
+                    <td><input type="text" id="id"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td id="spid"></td>
+                </tr>
+                <tr>
+                    <td>패스워드</td>
+                    <td><input type="text" onclick="evpw()" id="pwd"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td id="sppw"></td>
+                </tr>
+                <tr>
+                    <td>패스워드 확인 </td>
+                    <td><input type="text" id="cpwd" onclick="evcpw()"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td id="spcp"></td>
+                </tr>
+                <tr>
+                    <td>이메일</td>
+                    <td ><input type="text" onclick="evem()" style="width: 90px; margin-right: 0px;" >@<input type="text" style="width: 90px;"></td>
+                </tr>
+                <tr>
+                    <td>주소</td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="text"></td>
+                </tr>
+                
+            </table>
+            <br>
+            <input type="button" value="가 입">
+            
+        </div>
+    </div>
+    <script>
+        function evpw(){
+            document.getElementById('sppw').innerHTML="영문자 대/소문자 특수문자, 숫자 포함 8 ~ 32자";
+            let con =document.getElementById('id').value;
+            if(con===''){
+                document.getElementById('spid').innerText="필수 입력 항목 입니다"
+            }else{
+                document.getElementById('spid').innerText=""
+            }
+        }
+        function evcpw(){
+            let con =document.getElementById('pwd').value;
+            if(con===''){
+                document.getElementById('sppw').innerText="필수 입력 항목 입니다"
+            }else{
+                document.getElementById('sppw').innerText=""
+            }
+        }
+        function evem(){
+            let con =document.getElementById('cpwd').value;
+            if(con===''){
+                document.getElementById('spcp').innerText="필수 입력 항목 입니다"
+            }else{
+                document.getElementById('spcp').innerText=""
+            }
+        }
+    </script>
+</body>
+</html>

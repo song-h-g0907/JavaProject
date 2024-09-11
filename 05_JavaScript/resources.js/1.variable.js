@@ -138,7 +138,7 @@ console.log(symboli === sysmbol2)
 const man = {
     name : "최지원",
     age : 47,
-    address : "경기고",
+    address : "경기도",
     valuse : "감사",
     printInfo : function(){
         console.log(this.name +"입니다.")

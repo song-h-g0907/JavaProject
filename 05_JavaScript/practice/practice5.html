@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Practice3</h1>
+
+    <form action="">
+        <fieldset>
+            <legend>회원가입</legend>
+            아이디 : <input type="text" onkeyup="checkId(this)" data-name="아이디"><span id="id-review"></span><br><br>
+            비밀번호 : <input type="password" data-name="비밀번호"><br><br>
+            비밀번호 확인 : <input type="password" onblur="checkPass(this)"><span id="id-review"></span><br><br>
+            이름 : <input type="text" data-name="이름"><br><br>
+
+            <input type="submit" onclick="return validate();" value="회원가입">
+        </fieldset>
+    </form>
+
+    <script>
+        function checkId(_this){
+            const idValue = _this.value;
+            const outputId = document.getElementById('id-review');
+            if(idValue==='user01'){
+                outputId.innerHTML = "이미 존재하는 아이디입니다."
+                outputId.style.color="red";
+
+            }else{
+                outputId.innerHTML = "사용 가능한 아이디입니다."
+                outputId.style.color="green";
+            }
+        }
+
+        function checkPass(_this){
+            const idValue = _this.value;
+            const outputId = document.getElementById('pwd-review');
+        }
+        
+        function validate(){
+            const inputList = document.getElementsByTagName('input');
+            for(input of inputList){
+                if(input.dataset.name && input.trim() === ""){
+                    alert(input.dataset.name + "입력해주세요.");
+                    input.focus();
+                    return false;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
